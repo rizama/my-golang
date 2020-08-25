@@ -1,7 +1,8 @@
 package main
+
 import "fmt"
 
-func main()  {
+func main() {
 	var name string
 	name = "Sam"
 	fmt.Println(name)
@@ -13,8 +14,8 @@ func main()  {
 	fmt.Println(address)
 
 	// Multiple
-	var(
-		country = "Indonesia"
+	var (
+		country  = "Indonesia"
 		province = "Jawa Barat"
 	)
 
