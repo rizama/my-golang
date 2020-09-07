@@ -16,8 +16,8 @@ func main() {
 	blacklist := func(name string) bool {
 		return name == "wow"
 	}
-
 	registerUser("sam", blacklist)
+
 	registerUser("sem", func(name string) bool {
 		return name == "sem"
 	})
