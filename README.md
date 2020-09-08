@@ -1,5 +1,5 @@
-# Self-Development-Reactjs
-This repository for storing all practical exercises regarding React JS
+# Self-Development-Golang
+This repository for storing all practical exercises regarding Go Language
 
 ### Source
 This is a list in progress and their sources
