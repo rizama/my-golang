@@ -1,5 +1,9 @@
-# belajar-golang-dasar
-Belajar Golang Dasar
+# Self-Development-Reactjs
+This repository for storing all practical exercises regarding React JS
 
-Run on development mode:
-go run <filename.go>
+### Source
+This is a list in progress and their sources
+
+| Folder | Status | Source | Comments |
+| ------ | ------ | ------ | ------ |
+| build-react | :clock7: On Going | [Programmer Zaman Now](https://www.youtube.com/channel/UC14ZKB9XsDZbnHVmr4AmUpQ) - [Belajar Go-Lang] | Fundamentals |
