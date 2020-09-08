@@ -8,17 +8,19 @@ func registerUser(name string, blacklist Blacklist) {
 	if blacklist(name) {
 		fmt.Println("You Are Blocked", name)
 	} else {
-		fmt.Println(name)
+		fmt.Println("You Are Not Blocked", name)
 	}
 }
 
 func main() {
+	// Anonymous function di simpan ke dalam variable
 	blacklist := func(name string) bool {
-		return name == "wow"
+		return name == "anjay"
 	}
-	registerUser("sam", blacklist)
+	registerUser("anjay", blacklist)
 
+	// Anonymous function di simpan langsung ke parameter
 	registerUser("sem", func(name string) bool {
-		return name == "sem"
+		return name == "anjay"
 	})
 }
