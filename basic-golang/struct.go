@@ -16,11 +16,19 @@ Membuat data Struct
 
 Struct Literal
 
+Struct Method
+- Bisa juga digunakana untuk fucntion
+- Method dsini adalah function
+
 */
 
 type Customer struct {
 	Name, Address string
 	Age           int
+}
+
+func (customer Customer) sayHello(name string) {
+	fmt.Println("hello", name, "my name is", customer.Name)
 }
 
 func main() {
@@ -38,4 +46,6 @@ func main() {
 	}
 
 	fmt.Println(rizky)
+
+	sam.sayHello("Jang")
 }
