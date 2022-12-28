@@ -5,7 +5,7 @@ import "fmt"
 // Alias tipe data untuk Variable
 func main() {
 	type noKtp string
-	tyoe isMarried bool
+	type isMarried bool
 
 	var ktpSam noKtp = "123456789"
 	var maried isMarried = true
