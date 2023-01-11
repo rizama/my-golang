@@ -21,11 +21,17 @@ func main() {
 	fmt.Println(now.Minute())
 	fmt.Println(now.Second())
 	fmt.Println(now.Nanosecond())
+	fmt.Println(now.Format(time.RFC822))
+	fmt.Println(now.Format(time.Kitchen))
+	fmt.Println(now.Format(time.UnixDate))
+	fmt.Println(now.Format(time.RFC3339))
 
 	utc := time.Date(2020, 10, 10, 10, 10, 10, 10, time.UTC)
 	fmt.Println(utc)
 
-	layout := "2006-01-02"
-	parse, _ := time.Parse(layout, "1990-03-20")
+	layout := "2006-01-02Z+07"
+	// layout := "2023-01-02"
+	// layout := time.RFC3339
+	parse, _ := time.Parse(layout, "2023-03-11Z+07")
 	fmt.Print(parse)
 }
