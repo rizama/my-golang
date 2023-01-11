@@ -20,6 +20,7 @@ func main() {
 		data = data.Next()
 	}
 
+	// Do, fungsi bawaan rin
 	data.Do(func(value interface{}) {
 		fmt.Println(value)
 	})

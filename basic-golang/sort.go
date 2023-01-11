@@ -16,16 +16,20 @@ type User struct {
 	Age  int
 }
 
+// slice of User
 type UserSlice []User
 
+// implement kontrak Sort Interface (Len)
 func (value UserSlice) Len() int {
 	return len(value)
 }
 
+// implement kontrak Sort Interface (Less)
 func (value UserSlice) Less(i, j int) bool {
 	return value[i].Age < value[j].Age
 }
 
+// implement kontrak Sort Interface (Swap)
 func (value UserSlice) Swap(i, j int) {
 	value[i], value[j] = value[j], value[i]
 }
@@ -39,6 +43,8 @@ func main() {
 	}
 
 	fmt.Println(users)
+
+	// disini UserSlice yang memiliki kontrak dengan Sort Interface, maka users harus masuk kedalam UserSlice
 	sort.Sort(UserSlice(users))
 	fmt.Println(users)
 }
