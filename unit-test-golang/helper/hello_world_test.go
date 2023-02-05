@@ -2,6 +2,7 @@ package helper
 
 import (
 	"fmt"
+	"runtime"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -39,7 +40,7 @@ func TestSkip(t *testing.T) {
 }
 
 func TestHelloWorldRequire(t *testing.T) {
-	result := HelloWorld("Worlds")
+	result := HelloWorld("World")
 
 	// assert.Equal(t, expected, testing function, message error)
 	require.Equal(t, "Hello World", result, "Harusnya Hello World")
@@ -83,3 +84,28 @@ func TestSubTest(t *testing.T) {
 	})
 }
 
+func TestHelloWorldTableTest(t *testing.T) {
+	tests := []struct {
+		name     string
+		request  string
+		expected string
+	}{
+		{
+			name:     "HelloWorld Sam",
+			request:  "Sam",
+			expected: "Hello Sam",
+		},
+		{
+			name:     "HelloWorld Bro",
+			request:  "Bro",
+			expected: "Hello Bro",
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			result := HelloWorld(test.request)
+			assert.Equal(t, test.expected, result, "Harusnya "+test.expected)
+		})
+	}
+}
