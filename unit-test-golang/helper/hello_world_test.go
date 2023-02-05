@@ -8,6 +8,14 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestMain(m *testing.M) {
+	fmt.Println("Before")
+
+	m.Run() // run all test in hello_world_test.go
+
+	fmt.Println("After")
+}
+
 func TestHelloWorldAssert(t *testing.T) {
 	result := HelloWorld("World")
 
