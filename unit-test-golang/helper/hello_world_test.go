@@ -70,3 +70,16 @@ func TestHelloWorldSam(t *testing.T) {
 
 	fmt.Println("TestHelloWorldSam done")
 }
+
+func TestSubTest(t *testing.T) {
+	t.Run("Sam", func(t *testing.T) {
+		result := HelloWorld("Sam")
+		assert.Equal(t, "Hello Sam", result, "Must Be Hello Sam")
+	})
+
+	t.Run("Rizky", func(t *testing.T) {
+		result := HelloWorld("Rizky")
+		assert.Equal(t, "Hello Rizky", result, "Must Be Hello Rizky")
+	})
+}
+
