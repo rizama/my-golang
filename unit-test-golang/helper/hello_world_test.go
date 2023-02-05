@@ -110,7 +110,7 @@ func TestHelloWorldTableTest(t *testing.T) {
 	}
 }
 
-func BenchmarkHelloWorld(b *testing.B) {
+func BenchmarkHelloWorldSam(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		HelloWorld("Sam")
 	}
@@ -120,4 +120,19 @@ func BenchmarkHelloWorldWaw(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		HelloWorld("Waw")
 	}
+}
+
+func BenchmarkHelloWorldSub(b *testing.B) {
+
+	b.Run("Sam", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			HelloWorld("Sam")
+		}
+	})
+
+	b.Run("Waw", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			HelloWorld("Waw")
+		}
+	})
 }
