@@ -17,6 +17,19 @@ func TestHelloWorldAssert(t *testing.T) {
 	fmt.Println("Done")
 }
 
+func TestSkip(t *testing.T) {
+	fmt.Println(runtime.GOOS)
+	if runtime.GOOS == "linux" {
+		t.Skip("Can not run on linux")
+	}
+	result := HelloWorld("World")
+
+	// assert.Equal(t, expected, testing function, message error)
+	assert.Equal(t, "Hello World", result, "Harusnya Hello World")
+
+	fmt.Println("Done")
+}
+
 func TestHelloWorldRequire(t *testing.T) {
 	result := HelloWorld("Worlds")
 
