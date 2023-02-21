@@ -31,7 +31,7 @@ func main() {
 
 	layout := "2006-01-02Z+07"
 	// layout := "2023-01-02"
-	// layout := time.RFC3339
+	layout := time.RFC3339
 	parse, _ := time.Parse(layout, "2023-03-11Z+07")
 	fmt.Print(parse)
 }
