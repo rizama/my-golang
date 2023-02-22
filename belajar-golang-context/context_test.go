@@ -3,7 +3,9 @@ package belajar_golang_context
 import (
 	"context"
 	"fmt"
+	"runtime"
 	"testing"
+	"time"
 )
 
 func TestContext(t *testing.T) {
@@ -42,5 +44,54 @@ func TestContextWithValue(t *testing.T) {
 	fmt.Println(contextF.Value("c")) // dapat data parent, karena contextF adalah child dari contextC dimana contextC memiliki key "c"
 	fmt.Println(contextF.Value("b")) // tidak mendapatkan data, karena dari contextF sampai ke parent tertinggi tidak ada parent yang memiliki key "b" / disini kasusnya beda parent
 	fmt.Println(contextA.Value("b")) // tidak mendapatkan data, karena tidak bisa mengambil data dari child
+
+}
+
+func CreateCounter(ctx context.Context) chan int {
+	destination := make(chan int)
+
+	go func() {
+		defer close(destination)
+
+		counter := 0
+
+		for {
+			select {
+			case <-ctx.Done():
+				{
+					return
+				}
+			default:
+				{
+					destination <- counter
+					counter++
+				}
+			}
+		}
+	}()
+
+	return destination
+}
+
+func TestContextWithCancel(t *testing.T) {
+	fmt.Println("Total Goroutine", runtime.NumGoroutine())
+
+	parent := context.Background()
+	ctx, cancel := context.WithCancel(parent)
+
+	destination := CreateCounter(ctx)
+	for n := range destination {
+		fmt.Println("Counter", n)
+		if n == 10 {
+			break
+		}
+	}
+	fmt.Println("Total Goroutine", runtime.NumGoroutine())
+
+	// Memberi signal cancel pada context (ctx) yang dikirim ke CreateConter()
+	cancel()
+
+	time.Sleep(5 * time.Second)
+	fmt.Println("Total Goroutine", runtime.NumGoroutine())
 
 }
