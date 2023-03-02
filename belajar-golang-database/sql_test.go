@@ -45,3 +45,38 @@ func TestExecSqlDelete(t *testing.T) {
 
 	fmt.Println("Success Delte Customer")
 }
+func TestExecSqlSelect(t *testing.T) {
+	db := GetConnection()
+	defer db.Close()
+
+	ctx := context.Background()
+
+	querySql := "SELECT id, name FROM customer"
+
+	// QueryContext mengembalikan nilai, jadi cocok untuk proses sql seperti:
+	// 1. Select
+	rows, err := db.QueryContext(ctx, querySql)
+	if err != nil {
+		panic(err)
+	}
+
+	// Membaca result data
+	for rows.Next() {
+		var id string
+		var name string
+
+		// pembacaan kolom sesuai dengan query select yang digunakan diatas / sesuai urutan pada database
+		err := rows.Scan(&id, &name)
+		if err != nil {
+			panic(err)
+		}
+
+		fmt.Println(id)
+		fmt.Println(name)
+	}
+
+	// tutup Rows
+	defer rows.Close()
+
+	fmt.Println("Success Select Customer")
+}
