@@ -2,8 +2,10 @@ package belajar_golang_database
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"testing"
+	"time"
 )
 
 func TestExecSqlInsert(t *testing.T) {
@@ -45,6 +47,7 @@ func TestExecSqlDelete(t *testing.T) {
 
 	fmt.Println("Success Delte Customer")
 }
+
 func TestExecSqlSelect(t *testing.T) {
 	db := GetConnection()
 	defer db.Close()
@@ -73,6 +76,55 @@ func TestExecSqlSelect(t *testing.T) {
 
 		fmt.Println(id)
 		fmt.Println(name)
+	}
+
+	// tutup Rows
+	defer rows.Close()
+
+	fmt.Println("Success Select Customer")
+}
+
+func TestExecSqlComplex(t *testing.T) {
+	db := GetConnection()
+	defer db.Close()
+
+	ctx := context.Background()
+
+	querySql := "SELECT id, name, email, balance, rating, birth_date, married, created_at FROM customer"
+
+	// QueryContext mengembalikan nilai, jadi cocok untuk proses sql seperti:
+	// 1. Select
+	rows, err := db.QueryContext(ctx, querySql)
+	if err != nil {
+		panic(err)
+	}
+
+	// Membaca result data
+	for rows.Next() {
+		var id string
+		var name string
+		var email sql.NullString
+		var balance int32
+		var rating float32
+		var birth_date sql.NullTime
+		var created_at time.Time
+		var married bool
+
+		// pembacaan kolom sesuai dengan query select yang digunakan diatas / sesuai urutan pada database
+		err := rows.Scan(&id, &name, &email, &balance, &rating, &birth_date, &married, &created_at)
+		if err != nil {
+			panic(err)
+		}
+
+		fmt.Println("========================================")
+		fmt.Println("id:", id)
+		fmt.Println("name", name)
+		fmt.Println("email", email.String)
+		fmt.Println("balance", balance)
+		fmt.Println("rating", rating)
+		fmt.Println("birth_date", birth_date.Time)
+		fmt.Println("married", married)
+		fmt.Println("created_at", created_at)
 	}
 
 	// tutup Rows
