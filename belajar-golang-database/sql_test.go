@@ -48,7 +48,7 @@ func TestExecSqlDelete(t *testing.T) {
 	fmt.Println("Success Delte Customer")
 }
 
-func TestExecSqlSelect(t *testing.T) {
+func TestQuerySqlSelect(t *testing.T) {
 	db := GetConnection()
 	defer db.Close()
 
@@ -84,7 +84,7 @@ func TestExecSqlSelect(t *testing.T) {
 	fmt.Println("Success Select Customer")
 }
 
-func TestExecSqlComplex(t *testing.T) {
+func TestQuerySqlComplex(t *testing.T) {
 	db := GetConnection()
 	defer db.Close()
 
@@ -131,4 +131,40 @@ func TestExecSqlComplex(t *testing.T) {
 	defer rows.Close()
 
 	fmt.Println("Success Select Customer")
+}
+
+func TestQuerySqlInjection(t *testing.T) {
+	db := GetConnection()
+	defer db.Close()
+
+	ctx := context.Background()
+
+	username := "admin'; #"
+	password := "salah"
+
+	querySql := "SELECT username FROM users WHERE username = '" + username + "' AND password ='" + password + "' LIMIT 1"
+
+	fmt.Println(querySql, "Query")
+	rows, err := db.QueryContext(ctx, querySql)
+	if err != nil {
+		panic(err)
+	}
+
+	if rows.Next() {
+		var username string
+
+		// pembacaan kolom sesuai dengan query select yang digunakan diatas / sesuai urutan pada database
+		err := rows.Scan(&username)
+		if err != nil {
+			panic(err)
+		}
+
+		fmt.Println(username)
+		fmt.Println("Success Login")
+
+	} else {
+		fmt.Println("Gagal Login")
+	}
+
+	defer rows.Close()
 }
