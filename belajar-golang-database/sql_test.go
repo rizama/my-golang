@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"strconv"
 	"testing"
 	"time"
 )
@@ -257,4 +258,43 @@ func TestExecAutoIncrement(t *testing.T) {
 	fmt.Println("Id Terakhir :", lastInserId)
 
 	fmt.Println("Success Insert new Comments")
+}
+
+// Prepare Statement cocok digunakann ketika akan insert many dalam satu waktu,
+// sehingga Exec dan Sql tidak selalu membuat/bertanya ke Pool database
+func TestPrepareStatement(t *testing.T) {
+	// Get Connection to Pool
+	db := GetConnection()
+	defer db.Close()
+
+	// Prepare Statement
+	ctx := context.Background()
+	querySql := "INSERT INTO comments(email, comment) VALUES (?, ?)"
+	statement, err := db.PrepareContext(ctx, querySql)
+	if err != nil {
+		panic(err)
+	}
+	defer statement.Close()
+
+	// execute Prepare Statement
+	for i := 0; i < 10; i++ {
+		email := "sam" + strconv.Itoa(i) + "@gmail.com"
+		comment := "Komentar ke-" + strconv.Itoa(i)
+
+		// execute with prepare
+		// Tidak perlu melampirkan SQL QUery lagi karena sudah builtin ketika create Prepare Statement diatas.
+		// Langsung saja masukan ctx, dan parameter
+		result, err := statement.ExecContext(ctx, email, comment)
+		if err != nil {
+			panic(err)
+		}
+
+		lastId, err := result.LastInsertId()
+		if err != nil {
+			panic(err)
+		}
+
+		fmt.Println("Comment Id:", lastId)
+
+	}
 }
