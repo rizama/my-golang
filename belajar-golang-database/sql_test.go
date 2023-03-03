@@ -228,3 +228,33 @@ func TestExecSqlInsertSafe(t *testing.T) {
 
 	fmt.Println("Success Insert new Customer")
 }
+
+func TestExecAutoIncrement(t *testing.T) {
+	db := GetConnection()
+	defer db.Close()
+
+	ctx := context.Background()
+
+	querySql := "INSERT INTO comments(email, comment) VALUES (?, ?)"
+
+	email := "sam@gmail.com"
+	comment := "bagus"
+
+	// ExecContext tidak mengembalikan nilai, jadi cocok untuk proses sql seperti:
+	// 1. Insert
+	// 2. Update
+	// 3. Delete
+	result, err := db.ExecContext(ctx, querySql, email, comment)
+	if err != nil {
+		panic(err)
+	}
+
+	lastInserId, err := result.LastInsertId()
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println("Id Terakhir :", lastInserId)
+
+	fmt.Println("Success Insert new Comments")
+}
