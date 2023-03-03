@@ -168,3 +168,63 @@ func TestQuerySqlInjection(t *testing.T) {
 
 	defer rows.Close()
 }
+
+func TestQuerySqlInjectionSafe(t *testing.T) {
+	db := GetConnection()
+	defer db.Close()
+
+	ctx := context.Background()
+
+	username := "admin'; #"
+	password := "salah"
+
+	// menggunakan query parameter variadic
+	querySql := "SELECT username FROM users WHERE username = ? AND password = ? LIMIT 1"
+
+	fmt.Println(querySql, "Query")
+	rows, err := db.QueryContext(ctx, querySql, username, password)
+	if err != nil {
+		panic(err)
+	}
+
+	if rows.Next() {
+		var username string
+
+		// pembacaan kolom sesuai dengan query select yang digunakan diatas / sesuai urutan pada database
+		err := rows.Scan(&username)
+		if err != nil {
+			panic(err)
+		}
+
+		fmt.Println(username)
+		fmt.Println("Success Login")
+
+	} else {
+		fmt.Println("Gagal Login")
+	}
+
+	defer rows.Close()
+}
+
+func TestExecSqlInsertSafe(t *testing.T) {
+	db := GetConnection()
+	defer db.Close()
+
+	ctx := context.Background()
+
+	querySql := "INSERT INTO customer(id, name) VALUES (?, ?)"
+
+	id := "100"
+	name := "andre"
+
+	// ExecContext tidak mengembalikan nilai, jadi cocok untuk proses sql seperti:
+	// 1. Insert
+	// 2. Update
+	// 3. Delete
+	_, err := db.ExecContext(ctx, querySql, id, name)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println("Success Insert new Customer")
+}
