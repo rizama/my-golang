@@ -1,4 +1,4 @@
-package belajar_golang_embed
+package main_test
 
 import (
 	"embed"
@@ -40,4 +40,18 @@ func TestMultipleFiles(t *testing.T) {
 
 	c, _ := files.ReadFile("files/c.txt")
 	fmt.Println(string(c))
+}
+
+//go:embed files/*.txt
+var pathFiles embed.FS
+
+func TestMultipleFilesWithPath(t *testing.T) {
+	dir, _ := pathFiles.ReadDir("files")
+	for _, v := range dir {
+		if !v.IsDir() {
+			fmt.Println(v.Name())
+			content, _ := pathFiles.ReadFile("files/" + v.Name())
+			fmt.Println("content:", string(content))
+		}
+	}
 }
