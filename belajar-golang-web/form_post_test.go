@@ -1,7 +1,7 @@
 package belajar_golang_web
 
 import (
-	"fmt"
+	f "fmt"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -18,7 +18,7 @@ func FormPost(writer http.ResponseWriter, request *http.Request) {
 	first := request.PostForm.Get("first") // cara 1, harus diparsing dulu
 	last := request.PostFormValue("last")  // cara 2, tanpa parsing
 
-	fmt.Fprintf(writer, "Hello %s %s", first, last)
+	f.Fprintf(writer, "Hello %s %s", first, last)
 }
 
 func TestFormPost(t *testing.T) {
@@ -33,5 +33,5 @@ func TestFormPost(t *testing.T) {
 	body, _ := io.ReadAll(response.Body)
 	bodyString := string(body)
 
-	fmt.Println(bodyString)
+	f.Println(bodyString)
 }
