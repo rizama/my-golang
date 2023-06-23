@@ -1,0 +1,80 @@
+package belajar_golang_web
+
+import (
+	"embed"
+	_ "embed"
+	"fmt"
+	"html/template"
+	"io"
+	"net/http"
+	"net/http/httptest"
+	"testing"
+)
+
+func SimpleHTML(writer http.ResponseWriter, request *http.Request) {
+	templateText := `<html><body>{{.}}</body></html>`
+	t := template.Must(template.New("SIMPLE").Parse(templateText))
+
+	t.ExecuteTemplate(writer, "SIMPLE", "HELLO WORLDDDD")
+}
+
+func TestTemplateHTML(t *testing.T) {
+	request := httptest.NewRequest(http.MethodGet, "http://lolcahost:8081", nil)
+	recorder := httptest.NewRecorder()
+
+	SimpleHTML(recorder, request)
+
+	body, _ := io.ReadAll(recorder.Result().Body)
+	fmt.Println(string(body))
+}
+
+func SimpleHTMLFile(writer http.ResponseWriter, request *http.Request) {
+	t := template.Must(template.New("SIMPLE").ParseFiles("./templates/simple.gohtml"))
+
+	t.ExecuteTemplate(writer, "simple.gohtml", "FROM ZERO TO HERO")
+}
+
+func TestTemplateHTMLFile(t *testing.T) {
+	request := httptest.NewRequest(http.MethodGet, "http://lolcahost:8081", nil)
+	recorder := httptest.NewRecorder()
+
+	SimpleHTMLFile(recorder, request)
+
+	body, _ := io.ReadAll(recorder.Result().Body)
+	fmt.Println(string(body))
+}
+
+func TemplateDirectory(writer http.ResponseWriter, request *http.Request) {
+	t := template.Must(template.ParseGlob("./templates/*.gohtml"))
+
+	t.ExecuteTemplate(writer, "simple.gohtml", "FROM ZERO TO HERO 2")
+}
+
+func TestTemplateHTMLDirectory(t *testing.T) {
+	request := httptest.NewRequest(http.MethodGet, "http://lolcahost:8081", nil)
+	recorder := httptest.NewRecorder()
+
+	TemplateDirectory(recorder, request)
+
+	body, _ := io.ReadAll(recorder.Result().Body)
+	fmt.Println(string(body))
+}
+
+//go:embed templates/*.gohtml
+var templates embed.FS
+
+func TemplateEmbed(writer http.ResponseWriter, request *http.Request) {
+	t := template.Must(template.ParseFS(templates, "templates/*.gohtml"))
+
+	t.ExecuteTemplate(writer, "simple.gohtml", "FROM ZERO TO HERO 3")
+}
+
+func TestTemplateEmbed(t *testing.T) {
+	request := httptest.NewRequest(http.MethodGet, "http://lolcahost:8081", nil)
+	recorder := httptest.NewRecorder()
+
+	TemplateEmbed(recorder, request)
+
+	body, _ := io.ReadAll(recorder.Result().Body)
+	fmt.Println(string(body))
+}
