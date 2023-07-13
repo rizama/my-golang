@@ -1,0 +1,15 @@
+{
+    "Firstname": "Sam",
+    "Middlename": "Pratama",
+    "Lastname": "Who",
+    "Age": 27,
+    "Married": false,
+    "Addresses": [
+        { "Street": "Coblong", "Country": "Indonesia", "PostalCode": "40133" },
+        {
+            "Street": "Sadang Serang",
+            "Country": "Indonesia",
+            "PostalCode": "40133"
+        }
+    ]
+}
