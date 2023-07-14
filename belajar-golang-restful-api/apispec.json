@@ -7,7 +7,7 @@
     },
     "servers": [{ "url": "http://localhost:3000/api" }],
     "paths": {
-        "categories": {
+        "/categories": {
             "get": {
                 "tags": ["Category API"],
                 "description": "List all categories",
@@ -29,7 +29,7 @@
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                              "$ref": "#/components/schemas/Category"
+                                                "$ref": "#/components/schemas/Category"
                                             }
                                         }
                                     }
@@ -60,6 +60,45 @@
                 "responses": {
                     "201": {
                         "description": "Success Create Category",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "number"
+                                        },
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Category"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/categories/{categoryId}": {
+            "get": {
+                "tags": ["Category API"],
+                "description": "List all categories",
+                "summary": "List all categories",
+                "parameters": [
+                    {
+                        "schema":{},
+                        "name": "categoryId",
+                        "in": "path",
+                        "description": "Category ID",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success get category by Id",
                         "content": {
                             "application/json": {
                                 "schema": {
