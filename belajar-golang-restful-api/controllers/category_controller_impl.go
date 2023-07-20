@@ -15,6 +15,12 @@ type CategoryControllerImpl struct {
 	CategoryService services.CategoryService
 }
 
+func NewCategoryController(categoryService services.CategoryService) CategoryController {
+	return &CategoryControllerImpl{
+		CategoryService: categoryService,
+	}
+}
+
 func (controller CategoryControllerImpl) Create(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	decoder := json.NewDecoder(r.Body)
 	categoryCreateRequest := web.CategoryCreateRequest{}
@@ -83,6 +89,7 @@ func (controller CategoryControllerImpl) FindById(w http.ResponseWriter, r *http
 	helpers.PanicIfError(err)
 
 	categoryFindResponse := controller.CategoryService.FindById(r.Context(), id)
+
 	webResponse := web.WebResponse{
 		Code:   200,
 		Status: "OK",
