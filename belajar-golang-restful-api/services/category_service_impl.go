@@ -1,6 +1,7 @@
 package services
 
 import (
+	"belajar_golang_restful_api/exceptions"
 	"belajar_golang_restful_api/helpers"
 	"belajar_golang_restful_api/models/domain"
 	"belajar_golang_restful_api/models/web"
@@ -58,7 +59,9 @@ func (service *CategoryServiceImpl) Update(ctx context.Context, request web.Cate
 
 	// Find Category
 	category, err := service.CategoryRepository.FindById(ctx, tx, request.Id)
-	helpers.PanicIfError(err)
+	if err != nil {
+		panic(exceptions.NewNotFoundError(err.Error()))
+	}
 
 	// Apply Category Name
 	category.Name = request.Name
@@ -77,7 +80,9 @@ func (service *CategoryServiceImpl) Delete(ctx context.Context, categoryId int) 
 
 	// Find Category
 	category, err := service.CategoryRepository.FindById(ctx, tx, categoryId)
-	helpers.PanicIfError(err)
+	if err != nil {
+		panic(exceptions.NewNotFoundError(err.Error()))
+	}
 
 	service.CategoryRepository.Delete(ctx, tx, category)
 }
@@ -90,7 +95,9 @@ func (service *CategoryServiceImpl) FindById(ctx context.Context, categoryId int
 
 	// Find Category
 	category, err := service.CategoryRepository.FindById(ctx, tx, categoryId)
-	helpers.PanicIfError(err)
+	if err != nil {
+		panic(exceptions.NewNotFoundError(err.Error()))
+	}
 
 	return helpers.ToCategoryFindResponse(category)
 }
